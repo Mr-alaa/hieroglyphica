@@ -1,0 +1,20 @@
+# Hieroglyphica Project - Git Ignore File
+
+# Exclude main application file
+hieroglyphica-v3.html
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
