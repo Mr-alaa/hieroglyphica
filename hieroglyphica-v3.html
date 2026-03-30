@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>𓂀 HIEROGLYPHICA PRO v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Egyptian+Hieroglyphs&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060402;--s1:#0d0a05;--s2:#171108;--s3:#22180b;--s4:#2e2110;
+  --gold:#c89a0c;--gl:#f0b429;--gb:#ffd966;--cream:#f0e6c8;--cd:#9a8660;
+  --red:#c0392b;--green:#27ae60;--blue:#2980b9;--orange:#e67e22;
+  --brd:rgba(200,154,12,.2);--brdb:rgba(200,154,12,.55);
+  --gfont:'Noto Sans Egyptian Hieroglyphs','Segoe UI Historic',serif;
+  --mono:'JetBrains Mono',monospace;
+  --rb:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  background:var(--bg);color:var(--cream);
+  font-family:'Cinzel',Georgia,serif;
+  display:flex;flex-direction:column;height:100vh;
+  line-height:1;
+}
+
+/* ═══════════════════════════════════════════
+   HEADER / RIBBON
+═══════════════════════════════════════════ */
+header{
+  background:linear-gradient(180deg,#1c1409 0%,#0c0804 100%);
+  border-bottom:2px solid var(--brdb);
+  flex-shrink:0;z-index:30;
+  box-shadow:0 4px 30px rgba(0,0,0,.8);
+}
+.hd-logo{
+  display:flex;align-items:center;gap:12px;
+  padding:6px 14px 4px;border-bottom:1px solid var(--brd);
+}
+.logo-text{
+  font-family:'Cinzel Decorative',serif;font-size:14px;
+  color:var(--gb);letter-spacing:4px;
+  text-shadow:0 0 24px rgba(255,217,102,.35);
+}
+.logo-sub{font-size:8.5px;color:var(--cd);letter-spacing:2px;opacity:.7}
+.hd-logo-right{margin-left:auto;display:flex;gap:6px}
+
+/* Ribbon groups */
+.ribbon{
+  display:flex;align-items:stretch;
+  padding:0 8px;border-bottom:1px solid var(--brd);
+  overflow-x:auto;gap:0;
+}
+.ribbon::-webkit-scrollbar{height:2px}
+.ribbon::-webkit-scrollbar-thumb{background:var(--brd)}
+.ribbon:last-child{border-bottom:none}
+.rg{
+  display:flex;align-items:flex-start;gap:2px;
+  padding:4px 8px 0;
+  border-right:1px solid var(--brd);
+  flex-shrink:0;
+}
+.rg:last-child{border-right:none}
+.rg-label{
+  font-size:7px;letter-spacing:1.5px;color:var(--cd);
+  text-align:center;padding:1px 0 3px;
+  width:100%;opacity:.7;font-family:'Cinzel',serif;
+}
+.rg-col{display:flex;flex-direction:column;align-items:center;min-width:52px}
+
+/* Ribbon buttons */
+.rb{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:transparent;border:1px solid transparent;
+  color:var(--cd);padding:4px 6px 3px;border-radius:var(--rb);
+  cursor:pointer;transition:all .12s;
+  min-width:44px;font-family:'Cinzel',serif;
+  position:relative;flex-shrink:0;gap:2px;
+}
+.rb svg{flex-shrink:0;opacity:.8}
+.rb .rl{font-size:8.5px;white-space:nowrap;line-height:1}
+.rb:hover{background:var(--s3);border-color:var(--gold);color:var(--gl)}
+.rb:hover svg{opacity:1}
+.rb:active{transform:scale(.94)}
+.rb.active{background:rgba(200,154,12,.18);border-color:var(--gold);color:var(--gl)}
+
+/* KB badge on ribbon button */
+.kb{
+  position:absolute;top:2px;right:2px;
+  background:rgba(200,154,12,.18);color:var(--gold);
+  font-size:7px;padding:0 3px;border-radius:2px;
+  font-family:var(--mono);line-height:1.6;
+}
+
+/* Tooltip */
+.rb::after,.rbig::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 6px);left:50%;
+  transform:translateX(-50%);
+  background:#111;border:1px solid var(--brdb);color:var(--cream);
+  padding:4px 8px;border-radius:4px;font-size:10px;
+  white-space:nowrap;pointer-events:none;opacity:0;
+  transition:opacity .15s;z-index:100;font-family:'Cinzel',serif;
+  letter-spacing:.3px;
+}
+.rb:hover::after,.rbig:hover::after{opacity:1}
+
+/* Big icon button (for primary actions) */
+.rbig{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--s2);border:1px solid var(--brd);
+  color:var(--cd);padding:5px 8px 4px;border-radius:var(--rb);
+  cursor:pointer;transition:all .12s;
+  font-family:'Cinzel',serif;gap:3px;position:relative;flex-shrink:0;
+}
+.rbig svg{opacity:.85}
+.rbig .rl{font-size:9px;white-space:nowrap}
+.rbig:hover{background:var(--s3);border-color:var(--gold);color:var(--gl)}
+.rbig:hover svg{opacity:1}
+.rbig:active{transform:scale(.95)}
+
+/* Color input in ribbon */
+.cpk{
+  width:20px;height:20px;border-radius:50%;cursor:pointer;
+  border:2px solid var(--brdb);padding:0;background:none;
+}
+.cpk::-webkit-color-swatch-wrapper{padding:0}
+.cpk::-webkit-color-swatch{border:none;border-radius:50%}
+.cpresets{display:flex;gap:3px;flex-wrap:wrap;max-width:80px}
+.csw{
+  width:13px;height:13px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:all .1s;
+}
+.csw:hover,.csw.on{border-color:#fff;transform:scale(1.2)}
+
+/* Range slider */
+.sldr{
+  accent-color:var(--gold);cursor:pointer;
+  vertical-align:middle;
+}
+.slabel{font-size:8.5px;color:var(--cd);white-space:nowrap;font-family:'Cinzel',serif}
+
+/* Shade swatches */
+.shsw{
+  width:13px;height:13px;border-radius:3px;cursor:pointer;
+  border:2px solid transparent;transition:all .1s;
+}
+.shsw:hover,.shsw.on{border-color:#fff;transform:scale(1.2)}
+
+/* ═══════════════════════════════════════════
+   WORKSPACE
+═══════════════════════════════════════════ */
+.ws{display:flex;flex:1;overflow:hidden}
+
+/* ── Symbol Library ────────────────────── */
+.lp{
+  width:232px;flex-shrink:0;background:var(--s1);
+  border-right:1px solid var(--brd);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.panel-hd{
+  padding:7px 12px;font-size:8px;letter-spacing:3px;
+  color:var(--gold);border-bottom:1px solid var(--brd);
+  font-family:'Cinzel Decorative',serif;display:flex;align-items:center;gap:6px;
+}
+.srch-wrap{padding:5px;border-bottom:1px solid var(--brd)}
+#ss{
+  width:100%;background:var(--s2);border:1px solid var(--brd);
+  color:var(--cream);padding:5px 9px;border-radius:4px;font-size:11px;outline:none;
+  font-family:'Cinzel',serif;
+}
+#ss:focus{border-color:var(--gold)}
+#ss::placeholder{color:var(--cd);opacity:.5}
+.ctabs{
+  display:flex;flex-wrap:wrap;gap:2px;padding:5px;
+  border-bottom:1px solid var(--brd);
+}
+.ctab{
+  background:var(--s2);border:1px solid transparent;
+  color:var(--cd);padding:2px 6px;border-radius:10px;
+  font-size:8.5px;cursor:pointer;transition:all .1s;font-family:'Cinzel',serif;
+}
+.ctab.on{background:rgba(200,154,12,.18);border-color:var(--gold);color:var(--gl)}
+.sgrid{
+  flex:1;overflow-y:auto;padding:5px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:3px;align-content:start;
+}
+.sgrid::-webkit-scrollbar{width:3px}
+.sgrid::-webkit-scrollbar-thumb{background:var(--brd);border-radius:2px}
+.sb{
+  background:var(--s2);border:1px solid transparent;
+  color:var(--gl);font-family:var(--gfont);font-size:19px;
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border-radius:4px;transition:all .1s;position:relative;
+}
+.sb:hover{background:rgba(200,154,12,.18);border-color:var(--gold);transform:scale(1.08);z-index:2}
+.sb .tip{
+  position:absolute;bottom:calc(100%+3px);left:50%;
+  transform:translateX(-50%);background:#000;border:1px solid var(--brdb);
+  color:var(--cream);padding:2px 6px;border-radius:3px;font-size:8px;
+  white-space:nowrap;pointer-events:none;opacity:0;z-index:100;
+  font-family:'Cinzel',serif;
+}
+.sb:hover .tip{opacity:1}
+
+/* ── Center Canvas ─────────────────────── */
+.center{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.cwrap{
+  flex:1;overflow:auto;padding:32px 28px;
+  display:flex;justify-content:center;align-items:flex-start;
+  background:radial-gradient(ellipse at 50% 0%,#16100a 0%,#060402 80%);
+}
+.cwrap::-webkit-scrollbar{width:5px;height:5px}
+.cwrap::-webkit-scrollbar-thumb{background:var(--brd);border-radius:3px}
+#cv{
+  min-width:460px;min-height:200px;width:fit-content;
+  background:
+    linear-gradient(rgba(200,154,12,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,154,12,.035) 1px,transparent 1px),
+    #0e0a06;
+  background-size:52px 52px;
+  border:1px solid var(--brdb);border-radius:6px;
+  padding:22px 26px;
+  box-shadow:0 0 60px rgba(0,0,0,.9),inset 0 0 40px rgba(0,0,0,.4);
+  position:relative;cursor:default;
+  transition:border-color .2s;
+}
+#cv.dragover{border-color:#fff;box-shadow:0 0 40px rgba(255,255,255,.15)}
+#cv.empty::after{
+  content:'𓊹  Tap a symbol on the left — or type in the editor on the right  𓊹';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  color:rgba(200,154,12,.14);font-size:12px;pointer-events:none;
+  white-space:nowrap;font-family:'Cinzel',serif;letter-spacing:1px;
+}
+
+/* ── Tokens ────────────────────────────── */
+.wline{
+  display:flex;flex-direction:row;flex-wrap:nowrap;
+  align-items:center;gap:5px;min-height:72px;padding:4px 0;
+}
+
+.tok{
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;border-radius:5px;border:2px solid transparent;
+  transition:border-color .1s,background .1s,box-shadow .1s,transform .1s;
+  position:relative;user-select:none;flex-shrink:0;
+}
+.tok:hover{border-color:rgba(200,154,12,.3);background:rgba(200,154,12,.06)}
+.tok.sel{
+  border-color:var(--gb)!important;
+  background:rgba(200,154,12,.16)!important;
+  box-shadow:0 0 10px rgba(200,154,12,.4)!important;
+}
+.tok.sel::after{
+  content:'';position:absolute;top:-3px;right:-3px;
+  width:6px;height:6px;background:var(--gb);border-radius:50%;z-index:5;
+}
+.tok.cut{opacity:.4;border-color:var(--red)!important}
+
+@keyframes popIn{from{opacity:0;transform:scale(.3) rotate(-15deg)}to{opacity:1;transform:scale(1)}}
+.tg{font-family:var(--gfont);line-height:1;padding:3px}
+.tg.popin{animation:popIn .18s cubic-bezier(.175,.885,.32,1.3)}
+
+/* Groups */
+.th{
+  display:inline-flex;flex-direction:row;align-items:center;gap:3px;
+  padding:4px 7px;border-radius:5px;
+  border:1.5px dashed rgba(80,220,100,.4)!important;
+}
+.tv{
+  display:inline-flex;flex-direction:column;align-items:center;gap:2px;
+  padding:5px 6px;border-radius:5px;
+  border:1.5px dashed rgba(80,160,255,.4)!important;
+}
+.tl{
+  display:inline-grid;place-items:center;padding:4px;border-radius:5px;
+  border:1.5px dashed rgba(255,140,0,.4)!important;
+}
+.tl>.tok{grid-area:1/1}
+.tl>.tok:not(:first-child){transform:translate(9px,7px) scale(.76);opacity:.7}
+
+/* Cartouche */
+.tc{display:inline-flex;align-items:center;border:none!important;background:none!important}
+.cartbody{
+  display:flex;align-items:center;gap:4px;
+  border:2.5px solid var(--gb);border-radius:50px;
+  padding:5px 16px;cursor:pointer;transition:all .12s;
+}
+.carttie{width:7px;border:2.5px solid var(--gb);border-radius:3px;align-self:stretch;margin-left:4px;flex-shrink:0}
+.tok.sel .cartbody{border-color:#fff;box-shadow:0 0 14px rgba(200,154,12,.55)}
+.cartbody:hover{border-color:rgba(255,217,102,.7)}
+
+/* Spacer / BR */
+.tsp{
+  width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  border:1px dashed rgba(200,154,12,.18)!important;border-radius:3px;
+  font-size:10px;color:rgba(200,154,12,.25);font-family:sans-serif;
+}
+.tbr{
+  font-size:10px;color:rgba(200,154,12,.3);
+  border:1px dashed rgba(200,154,12,.14)!important;
+  padding:2px 5px;border-radius:3px;font-family:sans-serif;
+  cursor:pointer;
+}
+
+/* Shade zones */
+.sh-gray{background:rgba(130,130,130,.14)!important;outline:1.5px solid rgba(150,150,150,.35);outline-offset:1px}
+.sh-red {background:rgba(180,40,30,.14)!important; outline:1.5px solid rgba(192,57,43,.45);outline-offset:1px}
+.sh-blue{background:rgba(30,110,180,.14)!important;outline:1.5px solid rgba(41,128,185,.45);outline-offset:1px}
+.sh-gold{background:rgba(200,154,12,.14)!important;outline:1.5px solid rgba(200,154,12,.45);outline-offset:1px}
+
+/* Edit-group indicator */
+.eg-on{outline:2px solid orange!important;outline-offset:2px}
+
+/* ── Right Editor Panel ─────────────────── */
+.ep{
+  width:270px;flex-shrink:0;background:var(--s1);
+  border-left:1px solid var(--brd);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.ep.hidden{width:0;border-left:none;overflow:hidden}
+.ep-hd{
+  padding:7px 10px;border-bottom:1px solid var(--brd);
+  display:flex;align-items:center;gap:6px;
+}
+.ep-title{font-size:8px;letter-spacing:3px;color:var(--gold);font-family:'Cinzel Decorative',serif}
+.ep-tabs{display:flex;gap:3px;margin-left:auto}
+.eptab{
+  background:var(--s2);border:1px solid transparent;color:var(--cd);
+  padding:2px 8px;border-radius:10px;font-size:8px;cursor:pointer;
+  font-family:'Cinzel',serif;transition:all .1s;
+}
+.eptab.on{background:rgba(200,154,12,.18);border-color:var(--gold);color:var(--gl)}
+
+/* Editor textarea */
+.editor-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:8px}
+#mdc{
+  flex:1;background:var(--s2);border:1px solid var(--brd);
+  color:#e8dab2;padding:12px;border-radius:4px;
+  font-family:var(--mono);font-size:13px;line-height:1.8;
+  resize:none;outline:none;overflow-y:auto;
+  caret-color:var(--gb);
+}
+#mdc:focus{border-color:var(--gold);box-shadow:inset 0 0 8px rgba(200,154,12,.12)}
+.ed-help{
+  padding:7px 10px;font-size:8.5px;color:var(--cd);
+  border-top:1px solid var(--brd);line-height:1.7;
+  font-family:var(--mono);
+}
+.ed-help span{color:var(--gl)}
+.ed-apply{
+  display:flex;gap:5px;padding:5px 8px;border-top:1px solid var(--brd);
+}
+.eabtn{
+  flex:1;background:var(--s3);border:1px solid var(--brd);color:var(--gl);
+  padding:5px;border-radius:4px;cursor:pointer;font-size:9.5px;
+  font-family:'Cinzel',serif;transition:all .1s;
+}
+.eabtn:hover{background:rgba(200,154,12,.2);border-color:var(--gold)}
+
+/* Shortcuts panel */
+.shortcuts-panel{
+  flex:1;overflow-y:auto;padding:10px;
+}
+.sc-group{margin-bottom:10px}
+.sc-title{
+  font-size:8px;letter-spacing:2px;color:var(--gold);
+  font-family:'Cinzel Decorative',serif;margin-bottom:5px;
+}
+.sc-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:3px 0;border-bottom:1px solid rgba(200,154,12,.07);
+  font-size:9px;
+}
+.sc-row .sc-lbl{color:var(--cd)}
+.sc-row .sc-key{
+  background:var(--s3);border:1px solid var(--brd);
+  color:var(--gl);padding:1px 5px;border-radius:3px;
+  font-family:var(--mono);font-size:8.5px;
+}
+
+/* Properties panel (3rd tab) */
+.props-panel{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
+.pbox{background:var(--s2);border:1px solid var(--brd);border-radius:5px;padding:9px}
+.pboxt{font-size:8px;letter-spacing:2px;color:var(--gold);margin-bottom:7px;font-family:'Cinzel Decorative',serif}
+.pvdisp{
+  display:flex;align-items:center;justify-content:center;
+  height:56px;font-family:var(--gfont);font-size:44px;
+  color:var(--gl);margin-bottom:4px;
+}
+.pvname{font-size:9px;color:var(--cd);text-align:center}
+.prow{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:9.5px}
+.prl{color:var(--cd)}.prv{color:var(--gl);font-weight:600}
+.pp-sldr{width:100%;accent-color:var(--gold);margin:3px 0}
+.pp-swrow{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px}
+.pp-sw{
+  width:14px;height:14px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:all .1s;
+}
+.pp-sw:hover,.pp-sw.on{border-color:#fff;transform:scale(1.15)}
+.pbtn{
+  width:100%;background:var(--s3);border:1px solid var(--brd);
+  color:var(--gl);padding:5px;border-radius:4px;cursor:pointer;
+  font-family:'Cinzel',serif;font-size:9px;margin-bottom:3px;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  transition:all .1s;
+}
+.pbtn:hover{background:rgba(200,154,12,.18);border-color:var(--gold)}
+.rgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+
+/* ── Status Bar ─────────────────────────── */
+.statbar{
+  padding:4px 12px;border-top:1px solid var(--brd);background:var(--s1);
+  display:flex;align-items:center;gap:10px;font-size:9px;color:var(--cd);
+  flex-shrink:0;font-family:var(--mono);
+}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.sdot.warn{background:orange}
+.sdot.ok{background:var(--green)}
+#stMode{color:orange;font-weight:600}
+#clipIndicator{
+  margin-left:auto;background:rgba(200,154,12,.15);
+  color:var(--gl);padding:1px 6px;border-radius:8px;
+  display:none;font-size:8px;
+}
+#clipIndicator.show{display:inline-block}
+
+/* ── Toast ─────────────────────────────── */
+#toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(6px);
+  background:rgba(200,154,12,.93);color:#1e1a0c;
+  padding:5px 16px;border-radius:16px;font-size:10.5px;
+  opacity:0;transition:all .2s;pointer-events:none;z-index:9999;
+  font-family:'Cinzel',serif;white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── Edit Group Banner ───────────────────── */
+#egBar{
+  display:none;flex-shrink:0;align-items:center;gap:8px;
+  background:rgba(255,140,0,.08);border-bottom:1.5px solid rgba(255,140,0,.4);
+  padding:4px 12px;font-size:9.5px;color:orange;
+}
+#egBar.show{display:flex}
+
+/* scrollbar global */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--brd);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ HEADER ════════════════════ -->
+<header>
+<div class="hd-logo">
+  <div>
+    <div class="logo-text">𓂀 HIEROGLYPHICA PRO</div>
+    <div class="logo-sub">JSesh-style Hieroglyphic Editor</div>
+  </div>
+  <div class="hd-logo-right">
+    <!-- Toggle editor -->
+    <button class="rbig" id="toggleEditorBtn" data-tip="Show / Hide text editor panel" onclick="toggleEditor()" style="min-width:80px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      <span class="rl">Editor</span>
+    </button>
+    <!-- Toggle shortcuts -->
+    <button class="rbig" id="scBtn" data-tip="Keyboard shortcuts reference" onclick="epSwitchTab('sc')" style="min-width:80px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h4M2 16h20"/></svg>
+      <span class="rl">Shortcuts</span>
+    </button>
+  </div>
+</div>
+
+<!-- ROW 1: File + Edit -->
+<div class="ribbon">
+  <!-- FILE group -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;gap:2px">
+        <button class="rb" data-tip="Export canvas as PNG image (Ctrl+E)" onclick="exportPNG()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="rl">PNG</span>
+          <span class="kb">^E</span>
+        </button>
+        <button class="rb" data-tip="Copy as rich text → paste into Word / Pages (Ctrl+Shift+C)" onclick="copyToWord()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span class="rl">→Word</span>
+          <span class="kb">^⇧C</span>
+        </button>
+        <button class="rb danger" data-tip="Clear all glyphs (ask confirm)" onclick="clearAll()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4h8v2"/></svg>
+          <span class="rl">Clear</span>
+        </button>
+      </div>
+      <div class="rg-label">FILE</div>
+    </div>
+  </div>
+
+  <!-- HISTORY group -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;gap:2px">
+        <button class="rb" id="undoBtn" data-tip="Undo last action (Ctrl+Z)" onclick="undo()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7v6h6"/><path d="M3 13C5 7 10 3 16 3a9 9 0 0 1 0 18H8"/></svg>
+          <span class="rl">Undo</span>
+          <span class="kb">^Z</span>
+        </button>
+        <button class="rb" id="redoBtn" data-tip="Redo (Ctrl+Y or Ctrl+Shift+Z)" onclick="redo()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 7v6h-6"/><path d="M21 13C19 7 14 3 8 3a9 9 0 0 0 0 18h8"/></svg>
+          <span class="rl">Redo</span>
+          <span class="kb">^Y</span>
+        </button>
+      </div>
+      <div class="rg-label">HISTORY</div>
+    </div>
+  </div>
+
+  <!-- CLIPBOARD group -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;gap:2px">
+        <button class="rb" data-tip="Cut selected tokens — they move to clipboard (Ctrl+X)" onclick="cutSelected()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="6" cy="20" r="2"/><circle cx="6" cy="4" r="2"/><line x1="6" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="21" y2="21"/><line x1="6" y1="18" x2="21" y2="3"/></svg>
+          <span class="rl">Cut</span>
+          <span class="kb">^X</span>
+        </button>
+        <button class="rb" data-tip="Copy selected tokens to clipboard (Ctrl+C)" onclick="copySelected()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="rl">Copy</span>
+          <span class="kb">^C</span>
+        </button>
+        <button class="rb" data-tip="Paste from clipboard after selection (Ctrl+V)" onclick="pasteClipboard()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          <span class="rl">Paste</span>
+          <span class="kb">^V</span>
+        </button>
+        <button class="rb" data-tip="Duplicate selected tokens in place (Ctrl+D)" onclick="duplicateSelected()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="rl">Dup</span>
+          <span class="kb">^D</span>
+        </button>
+      </div>
+      <div class="rg-label">CLIPBOARD</div>
+    </div>
+  </div>
+
+  <!-- SELECTION group -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;gap:2px">
+        <button class="rb" data-tip="Select all tokens (Ctrl+A)" onclick="selectAll()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
+          <span class="rl">Sel All</span>
+          <span class="kb">^A</span>
+        </button>
+        <button class="rb" data-tip="Delete selected tokens (Delete key)" onclick="deleteSelected()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M8 6V4h8v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+          <span class="rl">Delete</span>
+          <span class="kb">Del</span>
+        </button>
+        <button class="rb" data-tip="Move selection one step left (Shift+←)" onclick="moveSelected('left')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          <span class="rl">Move ←</span>
+          <span class="kb">⇧←</span>
+        </button>
+        <button class="rb" data-tip="Move selection one step right (Shift+→)" onclick="moveSelected('right')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <span class="rl">Move →</span>
+          <span class="kb">⇧→</span>
+        </button>
+      </div>
+      <div class="rg-label">SELECTION</div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 2: Groups + Structure -->
+<div class="ribbon">
+  <!-- GROUPS -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;gap:2px">
+        <button class="rb" data-tip="Group selected signs horizontally — side by side in a row (Ctrl+G)" onclick="groupSelected('th')" style="border-color:rgba(80,220,100,.25)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#50dc64" stroke-width="2"><rect x="2" y="8" width="8" height="8" rx="1"/><rect x="14" y="8" width="8" height="8" rx="1"/><line x1="10" y1="12" x2="14" y2="12" stroke-dasharray="2 2"/></svg>
+          <span class="rl" style="color:#50dc64">H-Group</span>
+          <span class="kb">^G</span>
+        </button>
+        <button class="rb" data-tip="Group selected signs vertically — stacked on top of each other (Ctrl+Shift+G)" onclick="groupSelected('tv')" style="border-color:rgba(80,160,255,.25)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#50a0ff" stroke-width="2"><rect x="8" y="2" width="8" height="8" rx="1"/><rect x="8" y="14" width="8" height="8" rx="1"/><line x1="12" y1="10" x2="12" y2="14" stroke-dasharray="2 2"/></svg>
+          <span class="rl" style="color:#50a0ff">V-Group</span>
+          <span class="kb">^⇧G</span>
+        </button>
+        <button class="rb" data-tip="Create ligature — signs overlap each other like a combined glyph" onclick="groupSelected('tl')" style="border-color:rgba(255,140,0,.25)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg>
+          <span class="rl" style="color:#ff8c00">Ligature</span>
+        </button>
+        <button class="rb" data-tip="Ungroup — break a group back into individual signs (Ctrl+Shift+U)" onclick="ungroup()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v6M15 3v6M3 9h18M9 21H5a2 2 0 0 1-2-2v-4m6 6h10a2 2 0 0 0 2-2v-4M9 21v-6M15 21v-6M3 15h18"/></svg>
+          <span class="rl">Ungroup</span>
+          <span class="kb">^⇧U</span>
+        </button>
+      </div>
+      <div class="rg-label">GROUPING</div>
+    </div>
+  </div>
+
+  <!-- EDIT GROUP -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;gap:2px">
+        <button class="rb" id="egBtn" data-tip="Enter group edit mode — select one group then click to edit its children (or double-click group)" onclick="enterGroupEdit()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="orange" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <span class="rl" style="color:orange">Edit Group</span>
+        </button>
+        <button class="rb" data-tip="Exit group edit mode — return to top level (Escape)" onclick="exitGroupEdit()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <span class="rl">Exit Edit</span>
+          <span class="kb">Esc</span>
+        </button>
+      </div>
+      <div class="rg-label">GROUP EDIT</div>
+    </div>
+  </div>
+
+  <!-- CARTOUCHE / STRUCTURE -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;gap:2px">
+        <button class="rb" data-tip="Wrap selected signs in a royal cartouche oval (Ctrl+K)" onclick="addCartouche()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gb)" stroke-width="2"><ellipse cx="11" cy="12" rx="9" ry="6"/><line x1="20" y1="8" x2="22" y2="8"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="20" y1="16" x2="22" y2="16"/></svg>
+          <span class="rl" style="color:var(--gb)">Cartouche</span>
+          <span class="kb">^K</span>
+        </button>
+        <button class="rb" data-tip="Add a horizontal spacer between signs" onclick="addSpacer()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="8" x2="3" y2="16"/><line x1="21" y1="8" x2="21" y2="16"/></svg>
+          <span class="rl">Spacer</span>
+        </button>
+        <button class="rb" data-tip="Start a new line of hieroglyphs (Enter or Ctrl+Enter)" onclick="addLineBreak()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg>
+          <span class="rl">New Line</span>
+          <span class="kb">^↵</span>
+        </button>
+        <button class="rb" data-tip="Scale selected glyphs UP — make them larger (Ctrl+])" onclick="scaleSelected(1.15)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"/><line x1="21" y1="3" x2="14" y2="10"/><polyline points="9 21 3 21 3 15"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          <span class="rl">Scale+</span>
+          <span class="kb">^]</span>
+        </button>
+        <button class="rb" data-tip="Scale selected glyphs DOWN — make them smaller (Ctrl+[)" onclick="scaleSelected(0.87)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 14 10 14 10 20"/><line x1="10" y1="14" x2="3" y2="21"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/></svg>
+          <span class="rl">Scale−</span>
+          <span class="kb">^[</span>
+        </button>
+      </div>
+      <div class="rg-label">STRUCTURE</div>
+    </div>
+  </div>
+
+  <!-- LAYOUT group -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;align-items:center;gap:6px;padding:2px 0">
+        <div>
+          <div class="slabel">Spacing</div>
+          <input type="range" class="sldr" id="gapSlider" min="0" max="28" value="5" style="width:62px" oninput="setGap(+this.value)" data-tip="Adjust space between tokens">
+        </div>
+        <div>
+          <div class="slabel" style="margin-bottom:2px">Align</div>
+          <select style="background:var(--s2);border:1px solid var(--brd);color:var(--cream);padding:2px 4px;border-radius:3px;font-size:8.5px;font-family:'Cinzel',serif" id="alignSel" onchange="setAlign(this.value)">
+            <option value="flex-start">Left</option>
+            <option value="center">Center</option>
+            <option value="flex-end">Right</option>
+            <option value="space-between">Spread</option>
+          </select>
+        </div>
+      </div>
+      <div class="rg-label">LAYOUT</div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 3: Format / Color / Shade -->
+<div class="ribbon">
+  <!-- COLOR -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;align-items:center;gap:5px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <input type="color" class="cpk" id="cpMain" value="#f0b429" oninput="setColor(this.value)" title="Pick glyph color">
+          <span class="slabel">Color</span>
+        </div>
+        <div id="cPresets" class="cpresets"></div>
+        <div class="sep" style="width:1px;height:28px;background:var(--brd);flex-shrink:0"></div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <button class="rb" data-tip="Apply current color to selected glyph (Ctrl+P)" onclick="paintSelected()" style="min-width:48px">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h.01M7 20a5 5 0 0 0 9.8 1.4c.22-.9.78-1.6 1.55-2L21 17c-1.33-1-2-2.73-2-4.5A6.5 6.5 0 0 0 4 9.5C2.77 10.5 2 12 2 14.5"/></svg>
+            <span class="rl">Paint</span>
+            <span class="kb">^P</span>
+          </button>
+        </div>
+      </div>
+      <div class="rg-label">COLOR</div>
+    </div>
+  </div>
+
+  <!-- SIZE -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;align-items:center;gap:5px">
+        <div>
+          <div class="slabel">Size <span id="szVal" style="color:var(--gl)">48px</span></div>
+          <input type="range" class="sldr" id="szSlider" min="16" max="120" value="48" style="width:80px" oninput="onSzSlider(+this.value)">
+        </div>
+      </div>
+      <div class="rg-label">SIZE</div>
+    </div>
+  </div>
+
+  <!-- SHADE ZONES (JSesh) -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;align-items:center;gap:5px">
+        <div class="shsw on" id="shNone" style="background:var(--s4);color:var(--cd);font-size:9px;display:flex;align-items:center;justify-content:center;font-family:sans-serif" title="Remove shade zone (no shade)" onclick="applyShade(null)">✕</div>
+        <div class="shsw" style="background:rgba(140,140,140,.7)" title="Gray shade zone — standard JSesh unreadable zone" onclick="applyShade('gray')"></div>
+        <div class="shsw" style="background:rgba(192,57,43,.8)" title="Paint zone in RED — standard JSesh red highlight" onclick="applyShade('red')"></div>
+        <div class="shsw" style="background:rgba(41,128,185,.8)" title="Blue shade zone" onclick="applyShade('blue')"></div>
+        <div class="shsw" style="background:rgba(200,154,12,.8)" title="Gold highlight zone" onclick="applyShade('gold')"></div>
+        <div style="font-size:8.5px;color:var(--cd);margin-left:2px">→ applies to selection</div>
+      </div>
+      <div class="rg-label">SHADE ZONES (JSesh)</div>
+    </div>
+  </div>
+
+  <!-- QUICK PAINT -->
+  <div class="rg">
+    <div class="rg-col">
+      <div style="display:flex;gap:2px">
+        <button class="rb" data-tip="Paint selected glyphs RED — like JSesh Paint Red zone" onclick="paintGlyphs('#e74c3c')" style="border-color:rgba(231,76,60,.3)">
+          <div style="width:10px;height:10px;border-radius:50%;background:#e74c3c"></div>
+          <span class="rl" style="color:#e74c3c">Red</span>
+        </button>
+        <button class="rb" data-tip="Paint selected glyphs in Gold / default color" onclick="paintGlyphs('#f0b429')" style="border-color:rgba(240,180,41,.3)">
+          <div style="width:10px;height:10px;border-radius:50%;background:#f0b429"></div>
+          <span class="rl" style="color:var(--gl)">Gold</span>
+        </button>
+        <button class="rb" data-tip="Paint selected glyphs WHITE" onclick="paintGlyphs('#ffffff')">
+          <div style="width:10px;height:10px;border-radius:50%;background:#fff;border:1px solid #666"></div>
+          <span class="rl">White</span>
+        </button>
+        <button class="rb" data-tip="Paint selected glyphs GREEN" onclick="paintGlyphs('#22c55e')" style="border-color:rgba(34,197,94,.3)">
+          <div style="width:10px;height:10px;border-radius:50%;background:#22c55e"></div>
+          <span class="rl" style="color:#22c55e">Green</span>
+        </button>
+        <button class="rb" data-tip="Paint selected glyphs BLUE" onclick="paintGlyphs('#3b82f6')" style="border-color:rgba(59,130,246,.3)">
+          <div style="width:10px;height:10px;border-radius:50%;background:#3b82f6"></div>
+          <span class="rl" style="color:#3b82f6">Blue</span>
+        </button>
+      </div>
+      <div class="rg-label">QUICK PAINT</div>
+    </div>
+  </div>
+</div>
+</header>
+
+<!-- Edit Group banner -->
+<div id="egBar">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="orange" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+  <b>EDITING GROUP</b> — click children to select · use toolbar to paint/shade/resize
+  <span id="egInfo" style="font-size:8.5px;opacity:.65"></span>
+  <button style="margin-left:auto;background:rgba(255,140,0,.15);border:1px solid orange;color:orange;padding:2px 8px;border-radius:4px;cursor:pointer;font-family:'Cinzel',serif;font-size:9px" onclick="exitGroupEdit()">✕ Exit Group Edit (Esc)</button>
+</div>
+
+<!-- ════════════════════ WORKSPACE ════════════════════ -->
+<div class="ws">
+
+  <!-- LEFT: Symbol Library -->
+  <div class="lp">
+    <div class="panel-hd">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      SYMBOL LIBRARY
+    </div>
+    <div class="srch-wrap">
+      <input type="text" id="ss" placeholder="Search 140+ glyphs…" oninput="filterS(this.value)">
+    </div>
+    <div class="ctabs" id="ctabs"></div>
+    <div class="sgrid" id="sgrid"></div>
+  </div>
+
+  <!-- CENTER: Canvas -->
+  <div class="center">
+    <div class="cwrap" id="cwrap" onclick="bgClick(event)">
+      <div id="cv" class="empty" tabindex="0"></div>
+    </div>
+    <div class="statbar">
+      <div class="sdot" id="statusDot"></div>
+      <span id="stTok">0 tokens</span>
+      <span>·</span>
+      <span id="stSel">Nothing selected</span>
+      <span>·</span>
+      <span id="stHist">History 1/1</span>
+      <span>·</span>
+      <span id="stMode">Top level</span>
+      <span id="clipIndicator">📋 Clipboard ready</span>
+    </div>
+  </div>
+
+  <!-- RIGHT: Editor / Shortcuts / Properties -->
+  <div class="ep" id="ep">
+    <div class="ep-hd">
+      <div class="ep-title">EDITOR</div>
+      <div class="ep-tabs">
+        <button class="eptab on" id="tab-ed" onclick="epSwitchTab('ed')">Code</button>
+        <button class="eptab" id="tab-pr" onclick="epSwitchTab('pr')">Props</button>
+        <button class="eptab" id="tab-sc" onclick="epSwitchTab('sc')">Keys</button>
+      </div>
+    </div>
+
+    <!-- Tab: MdC Editor -->
+    <div id="panel-ed" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+      <div class="editor-wrap">
+        <textarea id="mdc" spellcheck="false" placeholder="MdC notation loads here…&#10;&#10;Type or edit glyphs directly.&#10;[A+B] = H-Group&#10;[A/B] = V-Group&#10;(A B C) = Cartouche&#10;_ = Spacer  &#10;newline = Line break"></textarea>
+      </div>
+      <div class="ed-help">
+        <span>[ </span>𓅃<span>+</span>𓋹<span> ]</span> H-group&nbsp;&nbsp;
+        <span>[ </span>𓅃<span>/</span>𓋹<span> ]</span> V-group<br>
+        <span>( </span>𓁩 𓊸 𓋹<span> )</span> Cartouche&nbsp;&nbsp;
+        <span>_</span> spacer&nbsp;&nbsp;newline=line break
+      </div>
+      <div class="ed-apply">
+        <button class="eabtn" onclick="applyEditor()" title="Parse editor text → update canvas (Ctrl+Enter)">
+          ▶ Apply to Canvas
+        </button>
+        <button class="eabtn" onclick="syncEditorFromCanvas()" title="Sync canvas state → update editor">
+          ↻ Sync from Canvas
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab: Properties -->
+    <div id="panel-pr" style="display:none;flex:1;overflow-y:auto">
+      <div class="props-panel">
+        <div class="pbox">
+          <div class="pboxt">SELECTED GLYPH</div>
+          <div class="pvdisp" id="pvDisp">—</div>
+          <div class="pvname" id="pvName">No selection</div>
+        </div>
+        <div class="pbox">
+          <div class="pboxt">COLOR</div>
+          <div class="pp-swrow" id="ppSwRow"></div>
+          <button class="pbtn" onclick="paintSelected()">🎨 Apply color to selection</button>
+        </div>
+        <div class="pbox">
+          <div class="pboxt">SIZE</div>
+          <div class="prow"><span class="prl">Font size</span><span class="prv" id="ppSzV">48px</span></div>
+          <input type="range" class="pp-sldr" id="ppSzS" min="16" max="120" value="48" oninput="onPropSz(+this.value)">
+        </div>
+        <div class="pbox">
+          <div class="pboxt">QUICK ACTIONS</div>
+          <button class="pbtn" onclick="groupSelected('th')">⟷ Group Horizontal</button>
+          <button class="pbtn" onclick="groupSelected('tv')">↕ Group Vertical</button>
+          <button class="pbtn" onclick="addCartouche()">𓇯 Wrap Cartouche</button>
+          <button class="pbtn" onclick="duplicateSelected()">⊞ Duplicate</button>
+          <button class="pbtn" onclick="enterGroupEdit()">✏ Edit Group</button>
+        </div>
+        <div class="pbox" style="flex:1">
+          <div class="pboxt">RECENT</div>
+          <div class="rgrid" id="rgrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Shortcuts -->
+    <div id="panel-sc" style="display:none;flex:1;overflow:hidden">
+      <div class="shortcuts-panel">
+        <div class="sc-group">
+          <div class="sc-title">NAVIGATION</div>
+          <div class="sc-row"><span class="sc-lbl">Select next / prev glyph</span><span class="sc-key">← →</span></div>
+          <div class="sc-row"><span class="sc-lbl">Deselect / Exit group edit</span><span class="sc-key">Esc</span></div>
+          <div class="sc-row"><span class="sc-lbl">Select all</span><span class="sc-key">Ctrl+A</span></div>
+        </div>
+        <div class="sc-group">
+          <div class="sc-title">HISTORY</div>
+          <div class="sc-row"><span class="sc-lbl">Undo</span><span class="sc-key">Ctrl+Z</span></div>
+          <div class="sc-row"><span class="sc-lbl">Redo</span><span class="sc-key">Ctrl+Y</span></div>
+          <div class="sc-row"><span class="sc-lbl">Redo (alt)</span><span class="sc-key">Ctrl+⇧Z</span></div>
+        </div>
+        <div class="sc-group">
+          <div class="sc-title">CLIPBOARD</div>
+          <div class="sc-row"><span class="sc-lbl">Cut selection</span><span class="sc-key">Ctrl+X</span></div>
+          <div class="sc-row"><span class="sc-lbl">Copy selection</span><span class="sc-key">Ctrl+C</span></div>
+          <div class="sc-row"><span class="sc-lbl">Paste</span><span class="sc-key">Ctrl+V</span></div>
+          <div class="sc-row"><span class="sc-lbl">Duplicate in-place</span><span class="sc-key">Ctrl+D</span></div>
+          <div class="sc-row"><span class="sc-lbl">Delete</span><span class="sc-key">Del / Backspace</span></div>
+        </div>
+        <div class="sc-group">
+          <div class="sc-title">GROUPING</div>
+          <div class="sc-row"><span class="sc-lbl">Group horizontal</span><span class="sc-key">Ctrl+G</span></div>
+          <div class="sc-row"><span class="sc-lbl">Group vertical</span><span class="sc-key">Ctrl+⇧G</span></div>
+          <div class="sc-row"><span class="sc-lbl">Ungroup</span><span class="sc-key">Ctrl+⇧U</span></div>
+          <div class="sc-row"><span class="sc-lbl">Cartouche</span><span class="sc-key">Ctrl+K</span></div>
+        </div>
+        <div class="sc-group">
+          <div class="sc-title">FORMAT</div>
+          <div class="sc-row"><span class="sc-lbl">Scale up</span><span class="sc-key">Ctrl+]</span></div>
+          <div class="sc-row"><span class="sc-lbl">Scale down</span><span class="sc-key">Ctrl+[</span></div>
+          <div class="sc-row"><span class="sc-lbl">Paint color</span><span class="sc-key">Ctrl+P</span></div>
+          <div class="sc-row"><span class="sc-lbl">New line</span><span class="sc-key">Ctrl+Enter</span></div>
+        </div>
+        <div class="sc-group">
+          <div class="sc-title">MOVE</div>
+          <div class="sc-row"><span class="sc-lbl">Move left</span><span class="sc-key">Shift+←</span></div>
+          <div class="sc-row"><span class="sc-lbl">Move right</span><span class="sc-key">Shift+→</span></div>
+        </div>
+        <div class="sc-group">
+          <div class="sc-title">EXPORT</div>
+          <div class="sc-row"><span class="sc-lbl">Export PNG</span><span class="sc-key">Ctrl+E</span></div>
+          <div class="sc-row"><span class="sc-lbl">Copy → Word</span><span class="sc-key">Ctrl+⇧C</span></div>
+          <div class="sc-row"><span class="sc-lbl">Apply editor</span><span class="sc-key">Ctrl+Enter</span></div>
+        </div>
+        <div class="sc-group">
+          <div class="sc-title">EDITOR SYNTAX</div>
+          <div class="sc-row"><span class="sc-lbl">H-Group</span><span class="sc-key">[A+B]</span></div>
+          <div class="sc-row"><span class="sc-lbl">V-Group</span><span class="sc-key">[A/B]</span></div>
+          <div class="sc-row"><span class="sc-lbl">Ligature</span><span class="sc-key">[A*B]</span></div>
+          <div class="sc-row"><span class="sc-lbl">Cartouche</span><span class="sc-key">(A B C)</span></div>
+          <div class="sc-row"><span class="sc-lbl">Spacer</span><span class="sc-key">_</span></div>
+          <div class="sc-row"><span class="sc-lbl">Line break</span><span class="sc-key">newline</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- ════════════════════ SCRIPT ════════════════════ -->
+<script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SYMBOL DATA
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const CATS={
+  People:[
+    {c:'𓀀',n:'Man sitting'},{c:'𓀁',n:'Man gesture'},{c:'𓀃',n:'Man cowering'},
+    {c:'𓀆',n:'Hand to head'},{c:'𓀏',n:'Hand to mouth'},{c:'𓀔',n:'Man walking'},
+    {c:'𓀭',n:'Prisoner'},{c:'𓀾',n:'Scribe'},{c:'𓀸',n:'Man dancing'},
+    {c:'𓁀',n:'Woman sitting'},{c:'𓁐',n:'Child'},{c:'𓁁',n:'Woman walking'},
+    {c:'𓁄',n:'Nursing woman'},{c:'𓁜',n:'God figure'},{c:'𓁩',n:'King running'},
+    {c:'𓀬',n:'Arm raised'},{c:'𓀷',n:'Man digging'},{c:'𓁤',n:'King crown'},
+    {c:'𓁣',n:'Royal figure'},{c:'𓁉',n:'Man with stick'},
+  ],
+  Animals:[
+    {c:'𓃒',n:'Bull'},{c:'𓃗',n:'Cow head'},{c:'𓃠',n:'Cat'},
+    {c:'𓃡',n:'Jackal'},{c:'𓃢',n:'Dog lying'},{c:'𓃦',n:'Elephant'},
+    {c:'𓃬',n:'Lion lying'},{c:'𓃭',n:'Lion front'},{c:'𓃯',n:'Hare'},
+    {c:'𓃲',n:'Pig'},{c:'𓃴',n:'Hippo'},{c:'𓃵',n:'Crocodile'},
+    {c:'𓃱',n:'Donkey'},{c:'𓃨',n:'Gazelle'},{c:'𓃳',n:'Horse'},
+    {c:'𓃶',n:'Frog'},{c:'𓃪',n:'Ibex'},{c:'𓃷',n:'Oryx'},
+  ],
+  Birds:[
+    {c:'𓅀',n:'Vulture'},{c:'𓅁',n:'Buzzard'},{c:'𓅂',n:'Falcon'},
+    {c:'𓅃',n:'Falcon perch'},{c:'𓅄',n:'Falcon sun'},{c:'𓅆',n:'Ibis'},
+    {c:'𓅉',n:'Heron'},{c:'𓅐',n:'Swallow'},{c:'𓅑',n:'Sparrow'},
+    {c:'𓅓',n:'Owl'},{c:'𓅔',n:'Quail chick'},{c:'𓅕',n:'Duck flying'},
+    {c:'𓅖',n:'Duck sitting'},{c:'𓅱',n:'Quail'},{c:'𓅸',n:'Flamingo'},
+    {c:'𓅷',n:'Heron 2'},{c:'𓆃',n:'Bee'},{c:'𓅫',n:'Pintail duck'},
+  ],
+  Body:[
+    {c:'𓂀',n:'Eye'},{c:'𓂁',n:'Eye weeping'},{c:'𓂂',n:'Eye painted'},
+    {c:'𓁶',n:'Head right'},{c:'𓁷',n:'Head profile'},{c:'𓁸',n:'Face'},
+    {c:'𓁹',n:'Eye of Ra'},{c:'𓁻',n:'Mouth'},{c:'𓂋',n:'Arm'},
+    {c:'𓂌',n:'Arm bread'},{c:'𓂍',n:'Arm down'},{c:'𓂎',n:'Arm up'},
+    {c:'𓂝',n:'Forearm'},{c:'𓂧',n:'Hand'},{c:'𓂩',n:'Finger'},
+    {c:'𓃀',n:'Leg'},{c:'𓃁',n:'Leg walking'},{c:'𓂺',n:'Foot'},
+  ],
+  Nature:[
+    {c:'𓇯',n:'Sky'},{c:'𓇳',n:'Sun disk'},{c:'𓇴',n:'Sun rays'},
+    {c:'𓇵',n:'Star'},{c:'𓇋',n:'Reed'},{c:'𓇌',n:'Double reed'},
+    {c:'𓇍',n:'Leaf'},{c:'𓇐',n:'Tree'},{c:'𓇑',n:'Date palm'},
+    {c:'𓆈',n:'Lotus'},{c:'𓆉',n:'Papyrus'},{c:'𓆊',n:'Papyrus clump'},
+    {c:'𓏭',n:'Mountain'},{c:'𓇣',n:'Grain'},{c:'𓈖',n:'Water'},
+    {c:'𓈗',n:'Water waves'},{c:'𓆑',n:'Horned viper'},
+  ],
+  Gods:[
+    {c:'𓊹',n:'Netjer god'},{c:'𓊺',n:'Goddess'},{c:'𓋹',n:'Ankh'},
+    {c:'𓋺',n:'Ankh var'},{c:'𓋻',n:'Tyet knot'},{c:'𓊃',n:'Shen ring'},
+    {c:'𓂸',n:'Djed pillar'},{c:'𓋞',n:'Was scepter'},{c:'𓊵',n:'Uraeus'},
+    {c:'𓊶',n:'Red crown'},{c:'𓊷',n:'White crown'},{c:'𓊸',n:'Double crown'},
+    {c:'𓆄',n:'Cobra'},{c:'𓆆',n:'Cobra basket'},{c:'𓏤',n:'God mark'},
+    {c:'𓊝',n:'Obelisk'},{c:'𓇉',n:'Nefer'},
+  ],
+  Objects:[
+    {c:'𓉐',n:'House'},{c:'𓉒',n:'Enclosure'},{c:'𓎟',n:'Town'},
+    {c:'𓎡',n:'Basket'},{c:'𓎢',n:'Basket handle'},{c:'𓏏',n:'Bread loaf'},
+    {c:'𓍿',n:'Knife'},{c:'𓍸',n:'Whip'},{c:'𓍹',n:'Staff'},
+    {c:'𓌻',n:'Plow'},{c:'𓋴',n:'Folded cloth'},{c:'𓐍',n:'Pot'},
+    {c:'𓌀',n:'Sickle'},{c:'𓎛',n:'Rope'},{c:'𓐠',n:'Mirror'},
+    {c:'𓐢',n:'Bolt'},{c:'𓐤',n:'Wick'},
+  ],
+  Numbers:[
+    {c:'𓏺',n:'One'},{c:'𓏻',n:'Two'},{c:'𓏼',n:'Three'},
+    {c:'𓏽',n:'Four'},{c:'𓏿',n:'Ten'},{c:'𓐀',n:'Twenty'},
+    {c:'𓐁',n:'Hundred'},{c:'𓂭',n:'Thousand'},{c:'𓆐',n:'Ten thousand'},
+    {c:'𓁨',n:'Hundred thousand'},{c:'𓁦',n:'Million'},
+  ],
+};
+
+// Build a map from char → name for the parser
+const CHAR_TO_NAME={};
+Object.values(CATS).flat().forEach(({c,n})=>{CHAR_TO_NAME[c]=n});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// STATE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let tokens=[];
+let selIds=new Set();
+let editGroupId=null;
+let history=[];let histIdx=-1;
+let clipboard=[];
+let cutMode=false;
+let curColor='#f0b429';let curSize=48;
+let recentList=[];let curCat='People';
+let editorOpen=true;
+let activeEpTab='ed';
+
+function mkId(){return '_'+Math.random().toString(36).substr(2,9)}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// HISTORY
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function saveH(){
+  history=history.slice(0,histIdx+1);
+  history.push(JSON.parse(JSON.stringify(tokens)));
+  if(history.length>80)history.shift();
+  histIdx=history.length-1;
+}
+function undo(){
+  if(histIdx<=0){toast('Nothing to undo');return}
+  histIdx--;tokens=JSON.parse(JSON.stringify(history[histIdx]));
+  selIds.clear();editGroupId=null;render();syncEditorFromCanvas();toast('Undo ✓')
+}
+function redo(){
+  if(histIdx>=history.length-1){toast('Nothing to redo');return}
+  histIdx++;tokens=JSON.parse(JSON.stringify(history[histIdx]));
+  selIds.clear();editGroupId=null;render();syncEditorFromCanvas();toast('Redo ✓')
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// LEVEL HELPERS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function getLevel(){
+  if(editGroupId){const g=findById(tokens,editGroupId);return g&&g.children?g.children:tokens}
+  return tokens;
+}
+function findById(arr,id){
+  for(const t of arr){
+    if(t.id===id)return t;
+    if(t.children){const f=findById(t.children,id);if(f)return f}
+  }
+  return null;
+}
+function deepClone(t){const c=JSON.parse(JSON.stringify(t));assignNewIds(c);return c}
+function assignNewIds(t){t.id=mkId();if(t.children)t.children.forEach(assignNewIds)}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// INSERT / ADD
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function insertTok(tok){
+  const lv=getLevel();saveH();
+  const sel=[...selIds];
+  if(sel.length){
+    const idx=lv.findIndex(t=>t.id===sel[sel.length-1]);
+    if(idx!==-1)lv.splice(idx+1,0,tok);else lv.push(tok);
+  }else lv.push(tok);
+  selIds=new Set([tok.id]);render();syncEditorFromCanvas();
+}
+function addGlyph(c,n){
+  insertTok({id:mkId(),type:'glyph',char:c,name:n||CHAR_TO_NAME[c]||c,color:curColor,size:curSize,shade:null});
+  pushRecent(c,n);
+}
+function addSpacer(){insertTok({id:mkId(),type:'spacer',shade:null})}
+function addLineBreak(){insertTok({id:mkId(),type:'br'})}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// GROUPING
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function groupSelected(type){
+  const lv=getLevel();
+  const sel=lv.filter(t=>selIds.has(t.id));
+  if(sel.length<2){toast('Select 2+ tokens to group (Ctrl+click for multi-select)');return}
+  saveH();
+  const firstIdx=lv.findIndex(t=>t.id===sel[0].id);
+  const selSet=new Set(sel.map(t=>t.id));
+  const kept=lv.filter(t=>!selSet.has(t.id));
+  const grp={id:mkId(),type,children:sel,shade:null};
+  kept.splice(firstIdx,0,grp);
+  lv.length=0;kept.forEach(t=>lv.push(t));
+  selIds=new Set([grp.id]);
+  render();syncEditorFromCanvas();
+  toast({th:'H-Group',tv:'V-Group',tl:'Ligature'}[type]+' created ✓')
+}
+function ungroup(){
+  const lv=getLevel();
+  const sel=lv.filter(t=>selIds.has(t.id)&&t.children);
+  if(!sel.length){toast('Select a group to ungroup');return}
+  saveH();
+  const newLv=[];
+  lv.forEach(t=>{
+    if(selIds.has(t.id)&&t.children)t.children.forEach(c=>newLv.push(c));
+    else newLv.push(t);
+  });
+  lv.length=0;newLv.forEach(t=>lv.push(t));
+  selIds.clear();render();syncEditorFromCanvas();toast('Ungrouped ✓')
+}
+function addCartouche(){
+  const lv=getLevel();
+  const sel=lv.filter(t=>selIds.has(t.id));
+  saveH();
+  const children=sel.length>0?sel:[{id:mkId(),type:'glyph',char:'𓊹',name:'Netjer',color:curColor,size:curSize,shade:null}];
+  const cart={id:mkId(),type:'cartouche',children,shade:null};
+  if(sel.length>0){
+    const firstIdx=lv.findIndex(t=>t.id===sel[0].id);
+    const selSet=new Set(sel.map(t=>t.id));
+    const kept=lv.filter(t=>!selSet.has(t.id));
+    kept.splice(firstIdx,0,cart);
+    lv.length=0;kept.forEach(t=>lv.push(t));
+  }else lv.push(cart);
+  selIds=new Set([cart.id]);
+  render();syncEditorFromCanvas();toast('Cartouche created ✓')
+}
+function enterGroupEdit(){
+  if(selIds.size!==1){toast('Select exactly one group first');return}
+  const id=[...selIds][0];
+  const tok=findById(tokens,id);
+  if(!tok||!tok.children){toast('Not a group — select a group/cartouche first');return}
+  editGroupId=id;selIds.clear();render();
+  toast('Group edit mode — click children to edit')
+}
+function exitGroupEdit(){
+  const prev=editGroupId;
+  editGroupId=null;
+  if(prev)selIds=new Set([prev]);
+  render();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// CLIPBOARD
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function cutSelected(){
+  if(!selIds.size){toast('Select tokens first');return}
+  const lv=getLevel();
+  clipboard=lv.filter(t=>selIds.has(t.id)).map(t=>deepClone(t));
+  cutMode=true;
+  saveH();
+  const selSet=new Set([...selIds]);
+  lv.length=0;tokens.filter(t=>!selSet.has(t.id)||t.type==='br').forEach(t=>{
+    // only filter from top level
+  });
+  // Rebuild properly
+  const kept=getLevel().filter(t=>!selIds.has(t.id)); // won't work after clear
+  // Do it right:
+  const lvRef=getLevel();
+  const newLv=lvRef.filter(t=>!selIds.has(t.id));
+  lvRef.length=0;newLv.forEach(t=>lvRef.push(t));
+  selIds.clear();
+  render();syncEditorFromCanvas();
+  showClipIndicator();
+  toast(`Cut ${clipboard.length} token(s) ✓`)
+}
+function copySelected(){
+  if(!selIds.size){toast('Select tokens first');return}
+  const lv=getLevel();
+  clipboard=lv.filter(t=>selIds.has(t.id)).map(t=>deepClone(t));
+  cutMode=false;
+  showClipIndicator();
+  toast(`Copied ${clipboard.length} token(s) ✓`)
+}
+function pasteClipboard(){
+  if(!clipboard.length){toast('Clipboard is empty');return}
+  const lv=getLevel();saveH();
+  const clones=clipboard.map(t=>deepClone(t));
+  const selArr=[...selIds];
+  if(selArr.length){
+    const idx=lv.findIndex(t=>t.id===selArr[selArr.length-1]);
+    lv.splice(idx+1,0,...clones);
+  }else lv.push(...clones);
+  selIds=new Set(clones.map(c=>c.id));
+  render();syncEditorFromCanvas();toast(`Pasted ${clones.length} token(s) ✓`)
+}
+function showClipIndicator(){
+  const ci=document.getElementById('clipIndicator');
+  ci.classList.add('show');
+  setTimeout(()=>ci.classList.remove('show'),3000);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// EDIT / FORMAT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function deleteSelected(){
+  if(!selIds.size){toast('Select tokens first');return}
+  const lv=getLevel();saveH();
+  const newLv=lv.filter(t=>!selIds.has(t.id));
+  lv.length=0;newLv.forEach(t=>lv.push(t));
+  selIds.clear();render();syncEditorFromCanvas();
+}
+function selectAll(){
+  const lv=getLevel();
+  selIds=new Set(lv.map(t=>t.id));render();
+}
+function duplicateSelected(){
+  if(!selIds.size){toast('Select tokens first');return}
+  const lv=getLevel();
+  const sel=lv.filter(t=>selIds.has(t.id));
+  if(!sel.length)return;saveH();
+  const clones=sel.map(t=>deepClone(t));
+  const lastIdx=lv.findIndex(t=>t.id===sel[sel.length-1].id);
+  lv.splice(lastIdx+1,0,...clones);
+  selIds=new Set(clones.map(c=>c.id));
+  render();syncEditorFromCanvas();toast('Duplicated ✓')
+}
+function moveSelected(dir){
+  if(selIds.size!==1){toast('Select one token to move');return}
+  const lv=getLevel();
+  const id=[...selIds][0];const idx=lv.findIndex(t=>t.id===id);
+  if(idx===-1)return;saveH();
+  if(dir==='left'&&idx>0)[lv[idx-1],lv[idx]]=[lv[idx],lv[idx-1]];
+  else if(dir==='right'&&idx<lv.length-1)[lv[idx+1],lv[idx]]=[lv[idx],lv[idx+1]];
+  render();syncEditorFromCanvas();
+}
+function setColor(v){
+  curColor=v;document.getElementById('cpMain').value=v;syncColorUI();
+}
+function setSize(v){
+  curSize=v;
+  document.getElementById('szVal').textContent=v+'px';
+  document.getElementById('szSlider').value=v;
+  document.getElementById('ppSzS').value=v;
+  document.getElementById('ppSzV').textContent=v+'px';
+}
+function onSzSlider(v){
+  setSize(v);
+  if(selIds.size){saveH();eachSel(t=>{if(t.type==='glyph')t.size=v});render();syncEditorFromCanvas();}
+}
+function onPropSz(v){
+  setSize(v);
+  if(selIds.size){saveH();eachSel(t=>{if(t.type==='glyph')t.size=v});render();syncEditorFromCanvas();}
+}
+function scaleSelected(f){
+  if(!selIds.size){toast('Select tokens first');return}
+  saveH();
+  eachSel(t=>{if(t.type==='glyph')t.size=Math.round(Math.max(12,Math.min(140,t.size*f)))});
+  render();syncEditorFromCanvas();
+}
+function paintSelected(){
+  if(!selIds.size){toast('Select tokens first');return}
+  saveH();eachSel(t=>{if(t.type==='glyph')t.color=curColor});
+  render();syncEditorFromCanvas();toast('Color applied ✓')
+}
+function paintGlyphs(color){
+  if(!selIds.size){toast('Select tokens first');return}
+  saveH();eachSel(t=>{if(t.type==='glyph')t.color=color});
+  render();syncEditorFromCanvas();toast('Paint applied ✓')
+}
+function applyShade(shade){
+  if(!selIds.size){toast('Select tokens first');return}
+  saveH();eachSel(t=>t.shade=shade);
+  render();syncEditorFromCanvas();
+  toast(shade?'Shade: '+shade:'Shade removed')
+}
+function clearAll(){
+  if(!tokens.length)return;
+  if(!confirm('Clear all hieroglyphs?'))return;
+  saveH();tokens=[];selIds.clear();editGroupId=null;
+  render();syncEditorFromCanvas();toast('Canvas cleared')
+}
+function eachSel(fn){getLevel().filter(t=>selIds.has(t.id)).forEach(fn)}
+function setGap(v){document.documentElement.style.setProperty('--gap',v+'px')}
+function setAlign(v){document.querySelectorAll('.wline').forEach(el=>el.style.justifyContent=v)}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RENDER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function render(){
+  const cv=document.getElementById('cv');
+  cv.innerHTML='';
+  cv.classList.toggle('empty',tokens.length===0);
+  let line=newLine();cv.appendChild(line);
+  for(const tok of tokens){
+    if(tok.type==='br'){
+      line.appendChild(mkBR(tok));
+      line=newLine();cv.appendChild(line);
+    }else{
+      line.appendChild(mkTok(tok,true));
+    }
+  }
+  const av=document.getElementById('alignSel').value;
+  document.querySelectorAll('.wline').forEach(el=>el.style.justifyContent=av);
+  updateStatus();updatePanel();updateEGBar();
+}
+function newLine(){const d=document.createElement('div');d.className='wline';return d}
+function mkBR(tok){
+  const el=document.createElement('div');
+  el.className='tok tbr'+(selIds.has(tok.id)?' sel':'');
+  el.textContent='↵';el.dataset.id=tok.id;
+  el.addEventListener('click',e=>{e.stopPropagation();handleTopClick(tok.id,e)});
+  return el;
+}
+
+function mkTok(tok,isTop){
+  const el=document.createElement('div');
+  el.className='tok';el.dataset.id=tok.id;
+  if(tok.shade)el.classList.add('sh-'+tok.shade);
+  const isTopLevel=!editGroupId&&isTop;
+  const isInEditCtx=editGroupId&&!isTop;
+  if((isTopLevel||isInEditCtx)&&selIds.has(tok.id))el.classList.add('sel');
+
+  el.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(editGroupId&&isTop){exitGroupEdit();return}
+    handleTopClick(tok.id,e);
+  });
+  el.addEventListener('dblclick',e=>{
+    e.stopPropagation();
+    if(tok.children&&isTop){
+      editGroupId=tok.id;selIds.clear();render();
+      toast('Editing group — click children to select')
+    }
+  });
+
+  if(tok.type==='glyph')fillGlyph(el,tok);
+  else if(tok.type==='th')fillGroup(el,tok,'th');
+  else if(tok.type==='tv')fillGroup(el,tok,'tv');
+  else if(tok.type==='tl')fillGroup(el,tok,'tl');
+  else if(tok.type==='cartouche')fillCartouche(el,tok);
+  else if(tok.type==='spacer'){el.classList.add('tsp');el.textContent='⟷'}
+  return el;
+}
+
+function handleTopClick(id,e){
+  if(e.shiftKey||e.ctrlKey||e.metaKey){
+    selIds.has(id)?selIds.delete(id):selIds.add(id);
+  }else{
+    selIds=new Set([id]);
+  }
+  render();updatePanel();
+}
+
+function fillGlyph(el,tok){
+  el.classList.add('tg','popin');
+  el.textContent=tok.char;
+  el.style.fontFamily="'Noto Sans Egyptian Hieroglyphs',serif";
+  el.style.fontSize=tok.size+'px';
+  el.style.color=tok.color;
+  el.style.minWidth=(tok.size+8)+'px';
+  el.style.height=(tok.size+8)+'px';
+  el.title=tok.name;
+}
+function fillGroup(el,tok,cls){
+  el.classList.add(cls);
+  const editing=editGroupId===tok.id;
+  if(editing)el.classList.add('eg-on');
+  (tok.children||[]).forEach(c=>el.appendChild(mkChild(c,editing)));
+}
+function fillCartouche(el,tok){
+  el.classList.add('tc');
+  const wrap=document.createElement('div');wrap.style.cssText='display:inline-flex;align-items:center';
+  const body=document.createElement('div');body.className='cartbody';
+  const editing=editGroupId===tok.id;
+  if(editing)body.classList.add('eg-on');
+  (tok.children||[]).forEach(c=>body.appendChild(mkChild(c,editing)));
+  const tie=document.createElement('div');tie.className='carttie';
+  wrap.appendChild(body);wrap.appendChild(tie);
+  el.appendChild(wrap);
+  body.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(editGroupId===tok.id)return;
+    if(editGroupId){exitGroupEdit();return}
+    handleTopClick(tok.id,e);
+  });
+}
+function mkChild(tok,editing){
+  const el=document.createElement('div');
+  el.className='tok';el.dataset.id=tok.id;
+  if(tok.shade)el.classList.add('sh-'+tok.shade);
+  if(editing&&selIds.has(tok.id))el.classList.add('sel');
+  el.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(!editing)return;
+    if(e.shiftKey||e.ctrlKey){selIds.has(tok.id)?selIds.delete(tok.id):selIds.add(tok.id)}
+    else selIds=new Set([tok.id]);
+    render();updatePanel();
+  });
+  if(tok.type==='glyph')fillGlyph(el,tok);
+  else if(tok.children){el.classList.add(tok.type);(tok.children||[]).forEach(c=>el.appendChild(mkChild(c,false)))}
+  return el;
+}
+
+function bgClick(e){
+  if(e.target===document.getElementById('cwrap')||e.target===document.getElementById('cv')||e.target.classList.contains('wline')){
+    if(editGroupId){exitGroupEdit();return}
+    selIds.clear();render();updatePanel();
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// STATUS / PANEL UPDATE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function updateStatus(){
+  document.getElementById('stTok').textContent=countDeep(tokens)+' tokens';
+  document.getElementById('stHist').textContent=`History ${histIdx+1}/${history.length}`;
+  document.getElementById('stMode').textContent=editGroupId?'✏ Group Edit':'Top level';
+  const lv=getLevel();const sel=lv.filter(t=>selIds.has(t.id));
+  document.getElementById('stSel').textContent=sel.length?sel.map(t=>t.name||t.type).join(', '):'Nothing selected';
+  document.getElementById('undoBtn').style.opacity=histIdx<=0?.35:1;
+  document.getElementById('redoBtn').style.opacity=histIdx>=history.length-1?.35:1;
+}
+function countDeep(arr){return arr.reduce((n,t)=>n+(t.children?1+countDeep(t.children):1),0)}
+function updateEGBar(){
+  const bar=document.getElementById('egBar');
+  bar.classList.toggle('show',!!editGroupId);
+  if(editGroupId){
+    const g=findById(tokens,editGroupId);
+    document.getElementById('egInfo').textContent=g?`— ${g.type}, ${(g.children||[]).length} children`:'';
+  }
+}
+function updatePanel(){
+  const lv=getLevel();const sel=lv.filter(t=>selIds.has(t.id));const f=sel[0];
+  const pd=document.getElementById('pvDisp');const pn=document.getElementById('pvName');
+  if(f&&f.type==='glyph'){
+    pd.textContent=f.char;pd.style.color=f.color;pd.style.fontSize='44px';
+    pn.textContent=f.name+' · '+f.size+'px';
+    document.getElementById('ppSzS').value=f.size;
+    document.getElementById('ppSzV').textContent=f.size+'px';
+  }else if(f){
+    const icons={cartouche:'𓇯',th:'⟷',tv:'↕',tl:'⊕',spacer:'⟷'};
+    pd.textContent=icons[f.type]||'?';pd.style.color='var(--gl)';pd.style.fontSize='28px';
+    pn.textContent=f.type+(f.children?` · ${f.children.length} children`:'');
+  }else{pd.textContent='—';pd.style.color='var(--cd)';pd.style.fontSize='28px';pn.textContent='No selection'}
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// MdC EDITOR — SERIALIZER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Syntax: [A+B] h-group, [A/B] v-group, [A*B] ligature, (A B) cartouche, _ spacer, newline=BR
+// Shade suffix: @r=red @g=gray @b=blue @k=gold
+function tokToMdc(tok){
+  if(tok.type==='glyph'){
+    const s=tok.char;
+    const shade=tok.shade?({'red':'@r','gray':'@g','blue':'@b','gold':'@k'}[tok.shade]||''):'';
+    return s+shade;
+  }
+  if(tok.type==='th'){
+    const inner=(tok.children||[]).map(tokToMdc).join('+');
+    const shade=tok.shade?({'red':'@r','gray':'@g','blue':'@b','gold':'@k'}[tok.shade]||''):'';
+    return`[${inner}]${shade}`;
+  }
+  if(tok.type==='tv'){
+    const inner=(tok.children||[]).map(tokToMdc).join('/');
+    const shade=tok.shade?({'red':'@r','gray':'@g','blue':'@b','gold':'@k'}[tok.shade]||''):'';
+    return`[${inner}]${shade}`;
+  }
+  if(tok.type==='tl'){
+    const inner=(tok.children||[]).map(tokToMdc).join('*');
+    const shade=tok.shade?({'red':'@r','gray':'@g','blue':'@b','gold':'@k'}[tok.shade]||''):'';
+    return`[${inner}]${shade}`;
+  }
+  if(tok.type==='cartouche'){
+    const inner=(tok.children||[]).map(tokToMdc).join(' ');
+    const shade=tok.shade?({'red':'@r','gray':'@g','blue':'@b','gold':'@k'}[tok.shade]||''):'';
+    return`(${inner})${shade}`;
+  }
+  if(tok.type==='spacer')return'_';
+  if(tok.type==='br')return'\n';
+  return'';
+}
+function syncEditorFromCanvas(){
+  if(activeEpTab!=='ed')return;
+  const mdc=document.getElementById('mdc');
+  mdc.value=tokens.map(tokToMdc).join(' ').replace(/ \n /g,'\n').replace(/\n /g,'\n');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// MdC EDITOR — PARSER
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function parseMdc(text){
+  const lines=text.split('\n');
+  const result=[];
+  for(let li=0;li<lines.length;li++){
+    if(li>0)result.push({id:mkId(),type:'br'});
+    const line=lines[li].trim();
+    if(!line)continue;
+    const toks=parseLine(line);
+    toks.forEach(t=>result.push(t));
+  }
+  return result;
+}
+
+function parseLine(text){
+  const chars=Array.from(text);
+  const result=[];
+  let i=0;
+  while(i<chars.length){
+    const ch=chars[i];
+    if(ch===' '||ch==='\t'){i++;continue}
+    if(ch==='['){
+      // group: find matching ]
+      let depth=1,j=i+1;
+      while(j<chars.length&&depth>0){if(chars[j]==='[')depth++;else if(chars[j]===']')depth--;j++}
+      const inner=chars.slice(i+1,j-1).join('');
+      // detect separator
+      let sep='+',type='th';
+      if(inner.includes('/'))sep='/',type='tv';
+      else if(inner.includes('*'))sep='*',type='tl';
+      const parts=splitOnSep(inner,sep);
+      const children=parts.map(p=>parseGroupItem(p)).flat();
+      let shade=null;
+      if(chars[j]==='@'){const sc=chars[j+1];shade=({r:'red',g:'gray',b:'blue',k:'gold'}[sc]||null);j+=2}
+      result.push({id:mkId(),type,children,shade});
+      i=j;
+    }else if(ch==='('){
+      // cartouche
+      let j=i+1;while(j<chars.length&&chars[j]!==')')j++;
+      const inner=chars.slice(i+1,j).join('').trim();
+      const childChars=Array.from(inner).filter(c=>c.trim());
+      const children=childChars.map(c=>{
+        // each char is a glyph (simple parse inside cartouche)
+        return{id:mkId(),type:'glyph',char:c,name:CHAR_TO_NAME[c]||c,color:curColor,size:curSize,shade:null}
+      });
+      let shade=null,k=j+1;
+      if(chars[k]==='@'){const sc=chars[k+1];shade=({r:'red',g:'gray',b:'blue',k:'gold'}[sc]||null);k+=2}
+      result.push({id:mkId(),type:'cartouche',children,shade});
+      i=k;
+    }else if(ch==='_'){
+      result.push({id:mkId(),type:'spacer',shade:null});i++;
+    }else{
+      // try to read a Unicode glyph (may be surrogate pair = 2 code units but 1 char via Array.from)
+      const shade_after=chars[i+1]==='@';
+      let shade=null;
+      if(shade_after){const sc=chars[i+2];shade=({r:'red',g:'gray',b:'blue',k:'gold'}[sc]||null)}
+      result.push({id:mkId(),type:'glyph',char:ch,name:CHAR_TO_NAME[ch]||ch,color:curColor,size:curSize,shade});
+      i+=shade_after?3:1;
+    }
+  }
+  return result;
+}
+function splitOnSep(str,sep){
+  // split on sep but respect nested []
+  const chars=Array.from(str);const parts=[];let cur=[];let depth=0;
+  for(const c of chars){
+    if(c==='[')depth++;else if(c===']')depth--;
+    if(c===sep&&depth===0){parts.push(cur.join(''));cur=[]}
+    else cur.push(c);
+  }
+  if(cur.length)parts.push(cur.join(''));
+  return parts;
+}
+function parseGroupItem(str){
+  const s=str.trim();
+  if(!s)return[];
+  if(s.startsWith('[')){
+    // nested group
+    return parseLine(s);
+  }
+  const chars=Array.from(s).filter(c=>c.trim());
+  return chars.map(c=>({id:mkId(),type:'glyph',char:c,name:CHAR_TO_NAME[c]||c,color:curColor,size:curSize,shade:null}));
+}
+
+function applyEditor(){
+  const text=document.getElementById('mdc').value;
+  try{
+    const parsed=parseMdc(text);
+    saveH();
+    tokens=parsed;
+    selIds.clear();editGroupId=null;
+    render();toast('Editor applied to canvas ✓');
+  }catch(e){toast('Parse error: '+e.message)}
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// EXPORT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function exportPNG(){
+  toast('Rendering PNG…');
+  const cv=document.getElementById('cv');
+  const cr=cv.getBoundingClientRect();
+  const pad=44;const W=cr.width+pad*2;const H=cr.height+pad*2;
+  const oc=document.createElement('canvas');oc.width=W*2;oc.height=H*2;
+  const ctx=oc.getContext('2d');ctx.scale(2,2);
+  ctx.fillStyle='#0e0a06';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(200,154,12,0.05)';ctx.lineWidth=.5;
+  for(let x=0;x<W;x+=52){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+  for(let y=0;y<H;y+=52){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+  let drawn=0;
+  cv.querySelectorAll('.tg').forEach(el=>{
+    if(!el.textContent.trim())return;
+    const r=el.getBoundingClientRect();if(!r.width)return;
+    ctx.fillStyle=el.style.color||'#f0b429';
+    ctx.font=`${parseInt(el.style.fontSize)||48}px "Noto Sans Egyptian Hieroglyphs",serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(el.textContent,r.left-cr.left+pad+r.width/2,r.top-cr.top+pad+r.height/2);
+    drawn++;
+  });
+  cv.querySelectorAll('.cartbody').forEach(el=>{
+    const r=el.getBoundingClientRect();if(!r.width)return;
+    ctx.strokeStyle='rgba(255,217,102,.9)';ctx.lineWidth=2.5;
+    ctx.beginPath();
+    ctx.ellipse(r.left-cr.left+pad+r.width/2,r.top-cr.top+pad+r.height/2,r.width/2+4,r.height/2+4,0,0,Math.PI*2);
+    ctx.stroke();
+  });
+  if(!drawn){toast('Nothing to export');return}
+  const a=document.createElement('a');
+  a.download='hieroglyphica_'+Date.now()+'.png';a.href=oc.toDataURL('image/png');a.click();
+  toast('PNG exported ✓')
+}
+
+async function copyToWord(){
+  const html=buildWordHTML(tokens);
+  const blob=new Blob([`<html><head><meta charset="utf-8"></head><body style="background:#fff;padding:20px"><div style="font-family:'Noto Sans Egyptian Hieroglyphs',serif;line-height:2">${html}</div></body></html>`],{type:'text/html'});
+  const plain=tokText(tokens);
+  try{
+    await navigator.clipboard.write([new ClipboardItem({'text/html':blob,'text/plain':new Blob([plain],{type:'text/plain'})})]);
+    toast('Copied as rich text — Ctrl+V into Word ✓');
+  }catch{
+    const d=document.createElement('div');
+    d.style.cssText='position:fixed;opacity:.001;left:0;top:0;font-size:48px;font-family:"Noto Sans Egyptian Hieroglyphs",serif';
+    d.innerHTML=html;document.body.appendChild(d);
+    const rng=document.createRange();rng.selectNodeContents(d);
+    window.getSelection().removeAllRanges();window.getSelection().addRange(rng);
+    try{document.execCommand('copy');toast('Copied — paste into Word ✓')}
+    catch{navigator.clipboard.writeText(plain).then(()=>toast('Plain text copied ✓'))}
+    document.body.removeChild(d);
+  }
+}
+function buildWordHTML(arr){
+  return arr.map(t=>{
+    if(t.type==='glyph')return`<span style="color:${t.color};font-size:${t.size}px">${t.char}</span>`;
+    if(t.children)return buildWordHTML(t.children);
+    if(t.type==='br')return'<br>';
+    if(t.type==='spacer')return'&nbsp;&nbsp;';
+    return'';
+  }).join('');
+}
+function tokText(arr){
+  return arr.map(t=>{
+    if(t.type==='glyph')return t.char;
+    if(t.children)return tokText(t.children);
+    if(t.type==='br')return'\n';
+    if(t.type==='spacer')return'  ';
+    return'';
+  }).join('');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SYMBOL PANEL
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initTabs(){
+  const c=document.getElementById('ctabs');
+  Object.keys(CATS).forEach(cat=>{
+    const b=document.createElement('button');
+    b.className='ctab'+(cat===curCat?' on':'');b.textContent=cat;
+    b.onclick=()=>{
+      curCat=cat;document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('on'));
+      b.classList.add('on');renderGrid();
+    };
+    c.appendChild(b);
+  });
+}
+function renderGrid(filter=''){
+  const g=document.getElementById('sgrid');g.innerHTML='';
+  const list=filter
+    ?Object.values(CATS).flat().filter(s=>s.n.toLowerCase().includes(filter.toLowerCase())||s.c.includes(filter))
+    :CATS[curCat]||[];
+  list.forEach(({c,n})=>{
+    const b=document.createElement('button');b.className='sb';
+    b.innerHTML=c+'<span class="tip">'+n+'</span>';
+    b.onclick=()=>addGlyph(c,n);g.appendChild(b);
+  });
+}
+function filterS(v){renderGrid(v)}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// COLOR PRESETS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const PRES=['#f0b429','#ffd966','#fff','#f0e6c8','#ef4444','#22c55e','#3b82f6','#a855f7','#f97316','#14b8a6'];
+function initPresets(){
+  const c=document.getElementById('cPresets');
+  PRES.forEach(col=>{
+    const sw=document.createElement('div');sw.className='csw';
+    sw.style.background=col;sw.dataset.c=col;sw.title=col;
+    sw.onclick=()=>{setColor(col);if(selIds.size)paintSelected()};
+    c.appendChild(sw);
+  });
+  const r=document.getElementById('ppSwRow');
+  PRES.forEach(col=>{
+    const sw=document.createElement('div');sw.className='pp-sw';
+    sw.style.background=col;sw.dataset.c=col;sw.title=col;
+    sw.onclick=()=>{setColor(col);if(selIds.size)paintSelected()};
+    r.appendChild(sw);
+  });
+}
+function syncColorUI(){
+  document.querySelectorAll('.csw,.pp-sw').forEach(s=>s.classList.toggle('on',s.dataset.c===curColor));
+}
+
+// Recent
+function pushRecent(c,n){
+  recentList=recentList.filter(r=>r.c!==c);recentList.unshift({c,n:n||CHAR_TO_NAME[c]||c});
+  if(recentList.length>12)recentList.pop();renderRecent();
+}
+function renderRecent(){
+  const g=document.getElementById('rgrid');g.innerHTML='';
+  recentList.forEach(({c,n})=>{
+    const b=document.createElement('button');b.className='sb';b.style.fontSize='15px';
+    b.innerHTML=c+'<span class="tip">'+n+'</span>';b.onclick=()=>addGlyph(c,n);g.appendChild(b);
+  });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// UI HELPERS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function toggleEditor(){
+  editorOpen=!editorOpen;
+  document.getElementById('ep').classList.toggle('hidden',!editorOpen);
+  document.getElementById('toggleEditorBtn').classList.toggle('active',editorOpen);
+}
+function epSwitchTab(tab){
+  activeEpTab=tab;
+  ['ed','pr','sc'].forEach(t=>{
+    document.getElementById('panel-'+t).style.display=(t===tab)?'flex':'none';
+    if(document.getElementById('panel-'+t).tagName==='DIV'&&t!=='ed'){
+      document.getElementById('panel-'+t).style.display=(t===tab)?'block':'none';
+    }
+    document.getElementById('tab-'+t).classList.toggle('on',t===tab);
+  });
+  if(tab==='ed')syncEditorFromCanvas();
+  if(!editorOpen){editorOpen=true;document.getElementById('ep').classList.remove('hidden');}
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// KEYBOARD
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+document.addEventListener('keydown',e=>{
+  const tag=document.activeElement.tagName;
+  const inEditor=tag==='TEXTAREA'||tag==='INPUT';
+  // Editor-specific: Ctrl+Enter = apply
+  if(inEditor&&(e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();applyEditor();return}
+  if(inEditor)return;
+
+  const ctrl=e.ctrlKey||e.metaKey;
+  if(ctrl){
+    switch(e.key){
+      case'z':e.preventDefault();e.shiftKey?redo():undo();break;
+      case'y':e.preventDefault();redo();break;
+      case'a':e.preventDefault();selectAll();break;
+      case'd':e.preventDefault();duplicateSelected();break;
+      case'x':e.preventDefault();cutSelected();break;
+      case'c':e.shiftKey?(e.preventDefault(),copyToWord()):(e.preventDefault(),copySelected());break;
+      case'v':e.preventDefault();pasteClipboard();break;
+      case'g':e.preventDefault();e.shiftKey?groupSelected('tv'):groupSelected('th');break;
+      case'k':e.preventDefault();addCartouche();break;
+      case'e':e.preventDefault();exportPNG();break;
+      case'p':e.preventDefault();paintSelected();break;
+      case']':e.preventDefault();scaleSelected(1.15);break;
+      case'[':e.preventDefault();scaleSelected(0.87);break;
+      case'Enter':e.preventDefault();addLineBreak();break;
+      case'U':if(e.shiftKey){e.preventDefault();ungroup()}break;
+    }
+    return;
+  }
+  switch(e.key){
+    case'Escape':editGroupId?exitGroupEdit():(selIds.clear(),render());break;
+    case'Delete':case'Backspace':e.preventDefault();deleteSelected();break;
+    case'ArrowLeft':e.shiftKey?moveSelected('left'):navSel(-1);break;
+    case'ArrowRight':e.shiftKey?moveSelected('right'):navSel(1);break;
+  }
+});
+function navSel(dir){
+  const lv=getLevel();if(!lv.length)return;
+  if(!selIds.size){selIds=new Set([lv[0].id]);render();return}
+  const id=[...selIds][0];const idx=lv.findIndex(t=>t.id===id);
+  selIds=new Set([lv[Math.max(0,Math.min(lv.length-1,idx+dir))].id]);render();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// TOAST
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let _tt;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2600);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// INIT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+window.onload=()=>{
+  initTabs();renderGrid();initPresets();
+  const mk=(c,sz,col)=>({id:mkId(),type:'glyph',char:c,name:CHAR_TO_NAME[c]||c,color:col||'#f0b429',size:sz||48,shade:null});
+  // Sample inscription: Falcon + Netjer + [Eye/Mouth] V-group + Cartouche with 3 signs
+  tokens=[
+    mk('𓅃',48),
+    mk('𓊹',48),
+    mk('𓋹',52,'#ffd966'),
+    {id:mkId(),type:'tv',shade:'gold',children:[mk('𓇳',36),mk('𓅓',34)]},
+    {id:mkId(),type:'th',shade:null,children:[mk('𓂀',40),mk('𓁻',40,'#ffd966')]},
+    {id:mkId(),type:'cartouche',shade:'red',children:[mk('𓁩',44),mk('𓊸',44,'#c89a0c'),mk('𓋹',44,'#ffd966')]},
+    mk('𓆉',44),
+  ];
+  saveH();render();syncEditorFromCanvas();
+  toast('𓊹 Ready — Editor tab syncs ↔ Canvas in real time');
+};
+</script>
+</body>
+</html>
